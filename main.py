@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from numpy import unique
+
 
 
 class Storage(ABC):
@@ -32,10 +32,11 @@ class Store(Storage):
     items = []
 
     def add(self, title, count):
+
         if title in self.items:
             self.items[title] += count
         else:
-            self.items[title] = count
+            self.items.append(f'{title}:{count}')
         self.capacity -= count
 
     def remove(self, title, quantity):
@@ -47,8 +48,9 @@ class Store(Storage):
 
     @property
     def get_items(self):
-        item = "\n".join([f"{item.product} - {item.amount}" for item in self.items])
+        item = "\n".join([f"{keys} - {values}" for keys, values in self.items.items()])
         return item
+
 
     @property
     def get_unique_items_count(self):
@@ -61,6 +63,7 @@ class Shop(Store):
         self._capacity = 20
 
 
+
 class Request:
     def __init__(self, fromm, to, amount, product):
         self.fromm = fromm
@@ -71,6 +74,7 @@ class Request:
 
 def main():
     while True:
+        print("\n")
         user_input = input(
             "Введите текст в формате:<действие> <количество> <наименование товара> из <место откуда> в <место куда>,\n"
             "Например Доставить 3 печенье из склад в магазин\n").split(" ")
@@ -82,7 +86,7 @@ def main():
         if len(user_input) != 7:
             print('Введен не верный запрос')
 
-        store.items = store_items
+
 
         if user_input[4].lower() == 'склад':
             pass
@@ -99,9 +103,12 @@ def main():
 
         print(f'Курьер везет {user_input[1]} {user_input[2]} со {user_input[4]} в {user_input[6]}')
         print("\n")
-        shop.add(user_input[2], user_input[1])
+        shop.add(user_input[2], int(user_input[1]))
         print(f'Курьер доставил {user_input[1]} {user_input[2]} в {user_input[6]}')
-
+        print('В склад хранится:')
+        print(store.get_items)
+        print('В магазин хранится:')
+        print(shop.get_items)
 
 
 # Доставить 3 печеньки из склад в магазин
@@ -116,4 +123,9 @@ if __name__ == "__main__":
         "чай": 20,
         "лимонад": 7,
     }
+
+    store.items = store_items
+
+
+
     main()
