@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from numpy import unique
 
 
 class Storage(ABC):
@@ -36,7 +37,6 @@ class Store(Storage):
         else:
             self.items[title] = count
         self.capacity -= count
-
 
     def remove(self, title, quantity):
         pass
@@ -89,14 +89,14 @@ def main():
             pass
 
         if user_input[2] in store.items:
-            print('Нужное количество есть на складе')
-            print("\n")
-
-
-
-
-
-
+            for keys, values in store.items.items():
+                if keys == user_input[2]:
+                    if int(user_input[1]) < int(values):
+                        print('Нужное количество есть на складе')
+                        print("\n")
+                    else:
+                        print('Не хватает на складе, попробуйте заказать меньше')
+                        print("\n")
 
 
 # Доставить 3 печеньки из склад в магазин
@@ -109,6 +109,9 @@ if __name__ == "__main__":
     store_items = {
         'печенье': 10,
         "чай": 20,
+        "лимонад": 7,
+        "лимонад": 7,
+        "лимонад": 7,
         "лимонад": 7,
     }
     main()
