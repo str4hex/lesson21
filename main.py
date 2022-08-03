@@ -82,7 +82,6 @@ def main():
         if len(user_input) != 7:
             print('Введен не верный запрос')
 
-        store = Store()
         store.items = store_items
 
         if user_input[4].lower() == 'склад':
@@ -98,20 +97,23 @@ def main():
                         print('Не хватает на складе, попробуйте заказать меньше')
                         print("\n")
 
+        print(f'Курьер везет {user_input[1]} {user_input[2]} со {user_input[4]} в {user_input[6]}')
+        print("\n")
+        shop.add(user_input[2], user_input[1])
+        print(f'Курьер доставил {user_input[1]} {user_input[2]} в {user_input[6]}')
+
+
 
 # Доставить 3 печеньки из склад в магазин
 
 
 if __name__ == "__main__":
     store = Store()
-    # shop = Shop()
+    shop = Shop()
 
     store_items = {
         'печенье': 10,
         "чай": 20,
-        "лимонад": 7,
-        "лимонад": 7,
-        "лимонад": 7,
         "лимонад": 7,
     }
     main()
