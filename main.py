@@ -1,19 +1,20 @@
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod, abstractproperty
 
 
 class Storage(ABC):
     items = {}
     capacity = 0
 
-    def add(self, items):
+    def add(self, items, quantity):
         pass
 
-    def remove(self, items, capacity):
+    def remove(self, items, quantity):
         pass
 
     def get_free_space(self):
         pass
 
+    @abstractproperty
     def get_items(self):
         pass
 
@@ -25,9 +26,12 @@ class Store(Storage):
     capacity = 100
     items = []
 
+    def __init__(self):
+        super().__init__()
+
     @classmethod
     @abstractmethod
-    def add(cls, items):
+    def add(cls, items, quantity):
         cls.items.append(items)
 
     @abstractmethod
@@ -42,8 +46,8 @@ class Store(Storage):
     @abstractmethod
     def get_items(self):
         item = "\n".join([f"{item.product} - {item.amount}" for item in self.items])
-        print(item)
-        return item
+        print('wadwd')
+        return 'item'
 
     @abstractmethod
     def get_unique_items_count(self):
@@ -88,7 +92,7 @@ def main():
     deliviry = 'Доставить 3 печеньки из склад в магазин'.split(" ")
     request = Request(fromm=deliviry[4], to=deliviry[6], amount=deliviry[1], product=deliviry[2])
     store = Store
-    store.add(request)
+    store.add(request, deliviry[1])
     print(store.get_items)
 
 
