@@ -2,17 +2,15 @@ from abc import ABC, abstractmethod
 
 
 class Storage(ABC):
-
-    def __init__(self, items, capacity):
-        self.items = items
-        self.capacity = capacity
+    items = {}
+    capacity = 0
 
     @abstractmethod
-    def add(self, items, capacity):
+    def add(self, items, quantity):
         pass
 
     @abstractmethod
-    def remove(self, items, capacity):
+    def remove(self, items, quantity):
         pass
 
     @abstractmethod
@@ -29,46 +27,88 @@ class Storage(ABC):
 
 
 class Store(Storage):
+    capacity = 100
+    items = []
 
-    def __init__(self, items, capacity):
-        super().__init__(items, capacity)
-        self._items = {}
-        self._capacity = 100
+    def add(self, title, count):
+        if title in self.items:
+            self.items[title] += count
+        else:
+            self.items[title] = count
+        self.capacity -= count
 
-    def add(self, items, capacity):
+
+    def remove(self, title, quantity):
         pass
 
-    def remove(self, items, capacity):
-        pass
-
+    @property
     def get_free_space(self):
-        pass
+        return self.capacity
 
+    @property
     def get_items(self):
-        pass
+        item = "\n".join([f"{item.product} - {item.amount}" for item in self.items])
+        return item
 
+    @property
     def get_unique_items_count(self):
-        pass
+        return set(self.items)
 
 
-class Shop(Storage):
-
-    def __init__(self, items, capacity):
-        super().__init__(items, capacity)
-        self._items = {}
+class Shop(Store):
+    def __init__(self):
+        super().__init__()
         self._capacity = 20
 
-    def add(self, items, capacity):
-        pass
 
-    def remove(self, items, capacity):
-        pass
+class Request:
+    def __init__(self, fromm, to, amount, product):
+        self.fromm = fromm
+        self.to = to
+        self.amount = amount
+        self.product = product
 
-    def get_free_space(self):
-        pass
 
-    def get_items(self):
-        pass
+def main():
+    while True:
+        user_input = input(
+            "Введите текст в формате:<действие> <количество> <наименование товара> из <место откуда> в <место куда>,\n"
+            "Например Доставить 3 печенье из склад в магазин\n").split(" ")
+        print("\n")
 
-    def get_unique_items_count(self):
-        pass
+        if user_input == "stop":
+            break
+
+        if len(user_input) != 7:
+            print('Введен не верный запрос')
+
+        store = Store()
+        store.items = store_items
+
+        if user_input[4].lower() == 'склад':
+            pass
+
+        if user_input[2] in store.items:
+            print('Нужное количество есть на складе')
+            print("\n")
+
+
+
+
+
+
+
+
+# Доставить 3 печеньки из склад в магазин
+
+
+if __name__ == "__main__":
+    store = Store()
+    # shop = Shop()
+
+    store_items = {
+        'печенье': 10,
+        "чай": 20,
+        "лимонад": 7,
+    }
+    main()
