@@ -70,13 +70,13 @@ class Store(Storage):
     def get_free_space(self):
         return self._capacity
 
-    # Возвращаем список что находится на складе
+    # геттер Возвращаем список что находится на складе
     @property
     def get_items(self):
         item = "\n".join([f"{key} - {values}" for key, values in self._items.items()])
         return item
 
-    # передаем список айтемов и кол-ва в функции main()
+    # сеттер передаем список айтемов и кол-ва в функции main()
     @get_items.setter
     def get_items(self, items):
         self._items = items
