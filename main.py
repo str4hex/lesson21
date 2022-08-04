@@ -39,13 +39,13 @@ class Store(Storage):
         self.capacity -= count
 
     def remove(self, title, count):
+        global qnt
         if title in self.items:
             qnt = self.items[title] - count
-            if qnt < 0:
-                self.items[title] = 0
-                self.items[title].pop()
-            else:
-                self.items[title] = qnt
+        if qnt <= 0:
+            self.items.pop(title)
+        else:
+            self.items[title] = qnt
         self.capacity -= count
 
     @property
@@ -81,7 +81,7 @@ def main():
         print("\n")
         user_input = input(
             "Введите текст в формате:<действие> <количество> <наименование товара> из <место откуда> в <место куда>,\n"
-            "Например: Доставить 3 Иван-чай из склад в магазин\n").split(" ")
+            "Например: Доставить 1 Икра-Заморская из склад в магазин\n").split(" ")
         print("\n")
 
         if user_input == "stop":
@@ -90,16 +90,18 @@ def main():
         if len(user_input) != 7:
             print('Введен не верный запрос')
         else:
-            if user_input[4].lower() == 'склад':
+            if user_input[4].lower() == 'склад' and user_input[2] in store.items:
                 if user_input[2] in store.items:
                     for keys, values in store.items.items():
                         if keys == user_input[2]:
-                            if int(user_input[1]) < int(values):
+                            if int(user_input[1]) <= int(values):
                                 print('Нужное количество есть на складе')
                                 print(
                                     f'Курьер везет {user_input[1]} {user_input[2]} со {user_input[4]} в {user_input[6]}')
                                 shop.add(user_input[2], int(user_input[1]))
+                                print(store.items)
                                 store.remove(user_input[2], int(user_input[1]))
+                                print(store.items)
                                 print(f'Курьер доставил {user_input[1]} {user_input[2]} в {user_input[6]}')
                                 print('В склад хранится:')
                                 print(store.get_items)
@@ -127,6 +129,9 @@ if __name__ == "__main__":
         'Зефир': 10,
         "Кокос": 20,
         "Иван-чай": 7,
+        "Репа":80,
+        "Картошка":190,
+        "Икра-Заморская":1
     }
     store.items = store_items
     main()
