@@ -28,25 +28,25 @@ class Storage(ABC):
 
 class Store(Storage):
     capacity = 100
-    items = []
-
+    items = {}
 
     def add(self, title, count):
 
         if title in self.items:
             self.items[title] += count
         else:
-            self.items.append({title: count})
+            self.items.update({title: count})
         self.capacity -= count
 
-    def remove(self, title, quantity):
+    def remove(self, title, count):
         if title in self.items:
-            qnt = self.items[title] - quantity
+            qnt = self.items[title] - count
             if qnt < 0:
                 self.items[title] = 0
+                self.items[title].pop()
             else:
                 self.items[title] = qnt
-
+        self.capacity -= count
 
     @property
     def get_free_space(self):
@@ -54,12 +54,8 @@ class Store(Storage):
 
     @property
     def get_items(self):
-        if len(self.items) == 1:
-            item = "\n".join([f"{keys} - {values}" for item in self.items for keys, values in item.items()])
-            return item
-        else:
-            item = "\n".join([f"{key} - {values}" for key, values in self.items.items()])
-            return item
+        item = "\n".join([f"{key} - {values}" for key, values in self.items.items()])
+        return item
 
     @property
     def get_unique_items_count(self):
@@ -85,7 +81,7 @@ def main():
         print("\n")
         user_input = input(
             "Введите текст в формате:<действие> <количество> <наименование товара> из <место откуда> в <место куда>,\n"
-            "Например Доставить 3 печенье из склад в магазин\n").split(" ")
+            "Например: Доставить 3 Иван-чай из склад в магазин\n").split(" ")
         print("\n")
 
         if user_input == "stop":
@@ -123,20 +119,14 @@ def main():
             else:
                 print("Такой перевозки у нас нет")
 
-
-# Доставить 3 печеньки из склад в магазин
-
-
 if __name__ == "__main__":
     store = Store()
     shop = Shop()
 
     store_items = {
-        'печенье': 10,
-        "чай": 20,
-        "лимонад": 7,
+        'Зефир': 10,
+        "Кокос": 20,
+        "Иван-чай": 7,
     }
-
     store.items = store_items
-
     main()
