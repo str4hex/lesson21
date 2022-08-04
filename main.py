@@ -43,7 +43,9 @@ class Store(Storage):
         if title in self.items:
             qnt = self.items[title] - count
         if qnt <= 0:
+            self.items[title] = 0
             self.items.pop(title)
+            pass
         else:
             self.items[title] = qnt
         self.capacity -= count
